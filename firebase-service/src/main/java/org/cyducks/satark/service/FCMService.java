@@ -13,6 +13,7 @@ import java.util.concurrent.ExecutionException;
 @Service
 @AllArgsConstructor
 public class FCMService {
+    private static final String MASS_REPORT_EVENT = "org.cyducks.satark.MASS_REPORT_EVENT";
 
     @Autowired
     private FirestoreService firestoreService;
@@ -26,6 +27,7 @@ public class FCMService {
         if(token != null) {
             Message message = Message.builder()
                     .setToken(token)
+                    .putData("event_type", MASS_REPORT_EVENT)
                     .setNotification(Notification.builder()
                             .setTitle(title)
                             .setBody(body)

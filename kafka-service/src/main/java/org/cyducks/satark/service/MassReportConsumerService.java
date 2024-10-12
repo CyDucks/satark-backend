@@ -17,14 +17,26 @@ public class MassReportConsumerService {
     @Autowired
     private FCMService fcmService;
 
-    @KafkaListener(topics = "mass-reports")
+    @Autowired
+    private ReportStreamingService reportStreamingService;
+
+    @KafkaListener(topics = "mass-reports", containerFactory = "kafkaListenerContainerFactory")
     public void getReports(List<Report> reports, @Header(KafkaHeaders.RECEIVED_KEY) String key) {
         log.info("MASS REPORT RECEIVED");
 
 
         try {
             log.info(key);
-            fcmService.sendPushNotification(key, "Mass Report Detected", "Multiple reports detected in your zone, please review.");
+            fcmService.sendPushNotification(
+                    key,
+                    "Mass Report Detected",
+                    "Multiple reports detected in your zone, please review."
+            );
+
+            for(Report report : reports) {
+                reportStreamingService.addReport(key, report);
+            }
+
         } catch (Exception e) {
             log.error(e.toString());
         }
