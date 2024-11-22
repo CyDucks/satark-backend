@@ -1,0 +1,44 @@
+version: '1'
+
+services:
+  zookeeper-m:
+    image: confluentinc/cp-zookeeper:6.0.0
+    hostname: zookeeper-m
+    platform: linux/amd64
+    container_name: zookeeper-m
+    ports:
+      - "32182:32182"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 32182
+      ZOOKEEPER_TICK_TIME: 2000
+
+  kafka-m:
+    image: confluentinc/cp-kafka:7.7.1
+    hostname: kafka-m
+    platform: linux/amd64
+    container_name: kafka-m
+    depends_on:
+      - zookeeper-m
+    ports:
+      - "29093:29093"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper-m:32182'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-m:9092,PLAINTEXT_HOST://localhost:29093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+
+  kafka-create-topics-m:
+    image: confluentinc/cp-kafka:7.7.1
+    depends_on:
+      - kafka-m
+    hostname: kafka-create-topics-m
+    platform: linux/amd64
+    command: ["bash", "./create-topics.sh"]
+    working_dir: /scripts
+    volumes:
+      - ./scripts:/scripts
+
