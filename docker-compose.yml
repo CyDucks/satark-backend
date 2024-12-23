@@ -1,4 +1,4 @@
-version: '1'
+version: '3.8'
 
 services:
   zookeeper-m:
@@ -11,6 +11,13 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 32182
       ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "32182"]
+      timeout: 5s
+      interval: 10s
+      retries: 5
 
   kafka-m:
     image: confluentinc/cp-kafka:7.7.1
@@ -18,18 +25,26 @@ services:
     platform: linux/amd64
     container_name: kafka-m
     depends_on:
-      - zookeeper-m
+      zookeeper-m:
+        condition: service_healthy
     ports:
       - "29093:29093"
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper-m:32182'
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-m:9092,PLAINTEXT_HOST://localhost:29093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-m:9092,PLAINTEXT_HOST://kafka-m:29093
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "9092"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   kafka-create-topics-m:
     image: confluentinc/cp-kafka:7.7.1
@@ -41,4 +56,37 @@ services:
     working_dir: /scripts
     volumes:
       - ./scripts:/scripts
+    networks:
+      - app-network
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: satark
+    ports:
+      - "8080:8080"
+      - "9095:9095"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - KAFKA_BOOTSTRAP_SERVERS=kafka-m:9092
+      - KAFKA_SECURITY_PROTOCOL=plaintext
+    volumes:
+      - ./config:/app/config
+    depends_on:
+      kafka-m:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http:localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.host_binding_ipv4: "127.0.0.1"
 

@@ -12,7 +12,7 @@ public class GrpcServerConfig {
 
     @Bean
     public Server grpcServer(ReportServiceImpl reportService) throws IOException {
-        Server server = ServerBuilder.forPort(9090)  // Define the port for gRPC
+        Server server = ServerBuilder.forPort(9095)  // Define the port for gRPC
                 .addService(reportService)         // Bind the service implementation
                 .build()
                 .start();

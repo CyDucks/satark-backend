@@ -22,7 +22,7 @@ public class ZoneService {
     public ConflictZone createZone(ConflictZone zone) {
         ConflictZone savedZone = zoneRepository.save(zone);
         log.info(savedZone.toString());
-        fcmService.broadcastNewZone(zone.getId());
+        fcmService.broadcastNewZone(savedZone.getId());
 
         return savedZone;
     }
