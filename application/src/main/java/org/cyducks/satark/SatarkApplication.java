@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication
 @ComponentScan(basePackages = "org.cyducks")
 @EntityScan("org.cyducks")
-@EnableJpaRepositories("org.cyducks")
+@EnableJpaRepositories(basePackages = "org.cyducks")
 public class SatarkApplication {
     public static void main(String[] args) {
         SpringApplication.run(SatarkApplication.class, args);

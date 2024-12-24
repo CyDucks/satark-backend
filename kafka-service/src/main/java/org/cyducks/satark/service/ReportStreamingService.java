@@ -3,11 +3,12 @@ package org.cyducks.satark.service;
 import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
 
+import org.cyducks.generated.Report;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Service;
-import org.cyducks.generated.Report;
+import org.cyducks.generated.ReportServiceGrpc;
 import org.cyducks.generated.ReportRequest;
 
 import java.util.concurrent.ConcurrentHashMap;

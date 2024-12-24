@@ -30,7 +30,7 @@ public class ReportProducerConfiguration {
     public Map<String, Object> producerConfig() {
         Map<String, Object> properties = new HashMap<>();
 
-        properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:29093");
+        properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka-m:29093");
         properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ReportSerializer.class);
 

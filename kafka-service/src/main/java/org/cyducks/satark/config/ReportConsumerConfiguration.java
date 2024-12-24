@@ -66,7 +66,7 @@ public class ReportConsumerConfiguration {
     public Map<String, Object> consumerConfigs() {
         Map<String, Object> configs = new HashMap<>();
 
-        configs.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:29093");
+        configs.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka-m:29093");
         configs.put(ConsumerConfig.GROUP_ID_CONFIG, "MyGroup");
         configs.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
 
