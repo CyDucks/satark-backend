@@ -46,4 +46,6 @@ RUN chmod +x /app/docker-entrypoint.sh
 EXPOSE 8080
 EXPOSE 9095
 
+RUN sed -i 's/\r$//' /app/docker-entrypoint.sh
+
 ENTRYPOINT ["/app/docker-entrypoint.sh"]
