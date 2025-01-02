@@ -40,10 +40,10 @@ public class ZoneService {
         ConflictZone zone = getZone(zoneId);
         zone.setActive(false);
         zoneRepository.save(zone);
-        try {
-            fcmService.sendPushNotification("fs", "fs", "fs");
-        } catch (ExecutionException | FirebaseMessagingException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            fcmService.sendPushNotification("fs", "fs", "fs");
+//        } catch (ExecutionException | FirebaseMessagingException | InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 }

@@ -27,7 +27,7 @@ RUN ls -l application/target/
 
 
 # Runtime stage
-FROM openjdk:17-slim
+FROM openjdk:17-jdk-slim
 
 WORKDIR /app
 

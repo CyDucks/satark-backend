@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
+import java.util.Map;
 
 @Service
 @AllArgsConstructor
@@ -22,13 +23,14 @@ public class FCMService {
     private FirestoreService firestoreService;
     private FirebaseMessaging firebaseMessaging;
 
-    public void sendPushNotification(String moderatorId, String title, String body) throws ExecutionException, InterruptedException, FirebaseMessagingException {
+    public void sendPushNotification(String moderatorId, String title, String body,Map<String, String> data) throws ExecutionException, InterruptedException, FirebaseMessagingException {
         String token = firestoreService.getModeratorToken(moderatorId);
 
         if(token != null) {
             Message message = Message.builder()
                     .setToken(token)
                     .putData("event_type", MASS_REPORT_EVENT)
+                    .putAllData(data)
                     .setNotification(Notification.builder()
                             .setTitle(title)
                             .setBody(body)
