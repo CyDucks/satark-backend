@@ -13,6 +13,7 @@
         <module>firebase-service</module>
         <module>zone-service</module>
         <module>application</module>
+        <module>routing-service</module>
     </modules>
 
     <parent>

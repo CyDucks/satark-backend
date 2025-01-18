@@ -1,0 +1,3 @@
+routing:
+  table: { path: 'C:\Users\jaipr\IdeaProjects\satarak-backend\routing-service\src\main\resources\routing-table.json' }
+  tolerance-meters: 75

@@ -11,4 +11,5 @@ ls
 # Start the application with external config
 exec java -jar \
     -Dspring.config.location=file:/app/config/application.properties \
+    -Dserver.address=0.0.0.0 \
     app.jar

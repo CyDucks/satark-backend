@@ -13,6 +13,7 @@ COPY firebase-service/pom.xml firebase-service/
 COPY grpc-service/pom.xml grpc-service/
 COPY kafka-service/pom.xml kafka-service/
 COPY zone-service/pom.xml zone-service/
+COPY routing-service/pom.xml routing-service/
 
 # Download dependencies
 RUN mvn dependency:go-offline -B
