@@ -31,6 +31,11 @@
             <artifactId>zone-service</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.cyducks</groupId>
+            <artifactId>routing-service</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

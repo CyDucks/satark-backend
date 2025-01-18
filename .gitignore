@@ -4,7 +4,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 !**/src/main/resources/serviceAccountKey.json
-config/
+**/config/
 
 ### STS ###
 .apt_generated
@@ -35,3 +35,6 @@ build/
 
 ### VS Code ###
 .vscode/
+/config/
+
+docker-compose.yml
